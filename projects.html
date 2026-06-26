@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Projects — Brian Keller</title>
+<meta name="description" content="Projects by Brian — machine learning, computer vision, and medical hardware for real-world physical problems." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --navy:    #0F1A2B;
+    --navy-2:  #16253c;
+    --paper:   #F5F6F8;
+    --paper-2: #ECEEF2;
+    --ink:     #14181F;
+    --muted:   #586173;
+    --on-navy:       #E8EDF5;
+    --on-navy-muted: #93A1B6;
+    --accent:  #E9A23B;
+    --hairline:      #E2E5EB;
+    --hairline-dark: rgba(255,255,255,.09);
+
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --body:    "IBM Plex Sans", system-ui, sans-serif;
+    --mono:    "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+  .wrap{ width:100%; max-width:1080px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- SHARED NAV ---------- */
+  .nav{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:24px 0;
+  }
+  .nav .brand{
+    font-family:var(--mono); font-weight:500; font-size:15px;
+    letter-spacing:.04em; text-decoration:none; color:var(--on-navy);
+  }
+  .nav .brand b{ color:var(--accent); font-weight:500; }
+  .nav-links{ display:flex; gap:26px; }
+  .nav-links a{
+    font-family:var(--mono); font-size:13px; letter-spacing:.04em;
+    text-decoration:none; color:var(--on-navy-muted);
+  }
+  .nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active{ color:var(--accent); outline:none; }
+
+  /* ---------- PAGE HEADER ---------- */
+  .page-head{ background:var(--navy); color:var(--on-navy); padding-bottom:64px; }
+  .page-head .intro{ padding-top:40px; }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 16px;
+  }
+  .page-head h1{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(34px,5vw,52px); line-height:1.04; letter-spacing:-.02em;
+    margin:0 0 16px;
+  }
+  .page-head p.sub{
+    color:var(--on-navy-muted); max-width:54ch; margin:0; font-size:17px;
+  }
+
+  /* ---------- PROJECT GRID ---------- */
+  .grid-section{ padding:64px 0 88px; }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+    gap:26px;
+  }
+
+  /* ---------- PROJECT TILE ---------- */
+  .tile{
+    display:flex; flex-direction:column;
+    background:#fff;
+    border:1px solid var(--hairline);
+    border-radius:14px;
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .tile:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 34px -18px rgba(15,26,43,.45);
+    border-color:#D4D8E0;
+  }
+
+  /* figure */
+  .thumb{
+    position:relative;
+    aspect-ratio:16 / 9;
+    background:
+      linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .thumb .ph{
+    font-family:var(--mono); font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--on-navy-muted);
+  }
+
+  /* body */
+  .tile-body{ padding:22px 22px 0; display:flex; flex-direction:column; flex:1; }
+  .tag{
+    align-self:flex-start;
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--hairline);
+    border-radius:999px; padding:4px 10px; margin-bottom:14px;
+  }
+  .tile h2{
+    font-family:var(--display); font-weight:600;
+    font-size:21px; line-height:1.18; letter-spacing:-.01em;
+    margin:0 0 6px;
+  }
+  .tile .meta{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.02em;
+    color:var(--muted); margin:0 0 14px;
+  }
+  .tile .meta b{ color:var(--accent); font-weight:500; }
+  .tile .abstract{ font-size:15.5px; line-height:1.62; color:#39414e; margin:0 0 20px; }
+
+  /* link row pinned to bottom */
+  .tile-links{
+    margin-top:auto;
+    border-top:1px solid var(--hairline);
+    padding:14px 22px;
+    display:flex; gap:20px; flex-wrap:wrap;
+  }
+  .tile-links a{
+    font-family:var(--mono); font-size:13px; letter-spacing:.03em;
+    text-decoration:none; color:var(--muted);
+    display:inline-flex; align-items:center; gap:5px;
+  }
+  .tile-links a:hover, .tile-links a:focus-visible{ color:var(--accent); outline:none; }
+  .tile-links .none{ font-family:var(--mono); font-size:13px; color:#9aa3b0; font-style:italic; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--hairline);
+    padding:32px 0 56px;
+    font-family:var(--mono); font-size:12.5px; color:var(--muted); letter-spacing:.03em;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:760px){
+    .grid{ grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .tile{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===================== HEADER + NAV ===================== -->
+  <header class="page-head">
+    <div class="wrap">
+      <nav class="nav">
+        <a class="brand" href="index.html">bk<b>.</b></a>
+        <div class="nav-links">
+          <a href="index.html">home</a>
+          <a href="projects.html" class="active">projects</a>
+          <a href="BK_Resume.pdf" target="_blank" rel="noopener">résumé</a>
+        </div>
+      </nav>
+
+      <div class="intro">
+        <p class="eyebrow">Projects</p>
+        <h1>Things I've built</h1>
+        <p class="sub">Machine learning, computer vision, and medical hardware — applied to physical, real-world problems across the lab, the clinic, and the field.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== PROJECT GRID ===================== -->
+  <section class="grid-section">
+    <div class="wrap">
+      <div class="grid">
+
+        <!-- ===========================================================
+             PROJECT TILE — copy this whole <article> block to add one.
+             • Figure: replace <div class="thumb">…</div> inner with
+               <img src="figs/yourimage.jpg" alt="..."> (keep it inside .thumb)
+             • Delete any link in .tile-links that isn't present for the project; if none,
+               leave the <span class="none">…</span> line instead.
+             =========================================================== -->
+        <article class="tile">
+          <div class="thumb">
+            <!-- TO DO-->
+            <!-- ADD IMAGE: <img src="figs/opensim.jpg" alt="Predicted vs. measured joint forces"> -->
+            <span class="ph">figure</span>
+          </div>
+          <div class="tile-body">
+            <span class="tag">Biomechanics · Deep Learning</span>
+            <h2>OpenSim Deep Learning Pipeline</h2>
+            <p class="meta">FAMM Lab · <b>Jun 2025 – Present</b></p>
+            <p class="abstract">
+              Deep learning models that predict lower-limb muscle and joint contact forces from ground reaction force data alone — built to give a robotic controller live feedback. I designed scalable preprocessing for multi-modal data (motion capture + force plates) and generated ground-truth force labels by simulating each trial in OpenSim with a custom static-optimization routine, validated across younger and older adult populations.
+            </p>
+          </div>
+          <div class="tile-links">
+            <!-- TO DO-->
+            <!-- set real URLs, or delete the line; keep at least the .none span if empty -->
+            <a href="#" target="_blank" rel="noopener">code &#8599;</a>
+            <span class="none">paper — in progress</span>
+          </div>
+        </article>
+
+        <!-- PROJECT TILE -->
+        <article class="tile">
+          <div class="thumb">
+            <!-- TO DO-->
+            <!-- ADD IMAGE: <img src="figs/nursery.jpg" alt="Computer vision plant grading"> -->
+            <span class="ph">figure</span>
+          </div>
+          <div class="tile-body">
+            <span class="tag">Computer Vision</span>
+            <h2>Automated Nursery Viability System</h2>
+            <p class="meta">University of Utah · <b>Jan 2026 – Present</b></p>
+            <p class="abstract">
+              A computer vision framework that automates plant viability grading at commercial nurseries, replacing subjective manual assessment with objective, scalable forecasting across large product volumes. I ran on-site interviews with nursery staff to translate their qualitative grading criteria into precise technical specifications the system could actually meet in a production environment.
+            </p>
+          </div>
+          <div class="tile-links">
+            <a href="#" target="_blank" rel="noopener">code &#8599;</a>
+            <span class="none">paper — in progress</span>
+          </div>
+        </article>
+
+        <!-- PROJECT TILE -->
+        <article class="tile">
+          <div class="thumb">
+            <!-- TO DO-->
+            <!-- ADD IMAGE: <img src="figs/spo2.jpg" alt="Esophageal SpO2 monitor prototype"> -->
+            <span class="ph">figure</span>
+          </div>
+          <div class="tile-body">
+            <span class="tag">Medical Hardware</span>
+            <h2>Esophageal SpO&#8322; Monitor</h2>
+            <p class="meta">Senior Capstone · Hardware Lead · <b>Jan – Nov 2024</b></p>
+            <p class="abstract">
+              A novel esophageal SpO&#8322; monitor built with a multidisciplinary capstone team. As hardware lead, I directed PCB selection, sensor integration, and component sourcing against clinical and regulatory constraints, and owned the design documentation and verification/validation protocols needed to meet FDA and ISO 13485 standards ahead of final design review.
+            </p>
+          </div>
+          <div class="tile-links">
+            <span class="none">documentation available on request</span>
+          </div>
+        </article>
+
+        <!-- To add another project, copy any <article class="tile"> block above and edit it. -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="wrap">© 2026 Brian Keller</div>
+  </footer>
+
+</body>
+</html>

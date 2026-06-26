@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <!-- ============================================================
-     EDIT: page title (shows in the browser tab + search results)
+     page title: (shows in the browser tab + search results)
      ============================================================ -->
-<title>Your Name — Data / ML</title>
-<meta name="description" content="Your Name — data and machine learning. Short one-line description here." />
+<title>Brian Keller — BME BS/MS | Deep Learning & AI Robotics Student</title>
+<meta name="description" content="U of U biomedical engineering student applying machine learning to biomechanics and human movement." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -58,11 +58,29 @@
     margin:0 0 18px;
   }
 
+  /* ---------- SHARED NAV ---------- */
+  .nav{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:24px 0 0;
+    margin-bottom:60px;
+  }
+  .nav .brand{
+    font-family:var(--mono); font-weight:500; font-size:15px;
+    letter-spacing:.04em; text-decoration:none; color:var(--on-navy);
+  }
+  .nav .brand b{ color:var(--accent); font-weight:500; }
+  .nav-links{ display:flex; gap:26px; }
+  .nav-links a{
+    font-family:var(--mono); font-size:13px; letter-spacing:.04em;
+    text-decoration:none; color:var(--on-navy-muted);
+  }
+  .nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active{ color:var(--accent); outline:none; }
+
   /* ---------- HERO ---------- */
   .hero{
     background:var(--navy);
     color:var(--on-navy);
-    padding:84px 0 96px;
+    padding:0 0 96px;
   }
   .hero-grid{
     display:grid;
@@ -191,6 +209,7 @@
     .about-grid{ grid-template-columns:1fr; gap:18px; }
     .links a{ grid-template-columns:1fr auto; }
     .links .k{ grid-column:1 / -1; margin-bottom:-12px; }
+    .nav{ margin-bottom:44px; }
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -202,30 +221,37 @@
 
   <!-- ===================== HERO ===================== -->
   <header class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-content">
+    <div class="wrap">
 
-        <!-- EDIT: swap the initials for a photo by replacing the text below with:
-             <img src="photo.jpg" alt="Your Name" />
-             (drop photo.jpg in the same folder as this file) -->
-        <div class="avatar">YN</div>
+      <nav class="nav">
+        <a class="brand" href="index.html">bk<b>.</b></a>
+        <div class="nav-links">
+          <a href="index.html" class="active">home</a>
+          <a href="projects.html">projects</a>
+          <a href="BK_Resume.pdf" target="_blank" rel="noopener">résumé</a>
+        </div>
+      </nav>
 
-        <p class="eyebrow">Data / ML Engineer</p>
+      <div class="hero-grid">
+        <div class="hero-content">
 
-        <!-- EDIT: your name -->
-        <h1>Your Name</h1>
+          <!-- swap the photo file by replacing src; keep the <img> inside .avatar -->
+          <div class="avatar"><img src="headshot.jpg" alt="Brian Keller" /></div>
 
-        <!-- EDIT: one-line description of what you do / want to do -->
-        <p class="tagline">I build machine learning systems that turn messy data into decisions.</p>
+          <p class="eyebrow">Biomechanist | Data / ML Engineer</p>
 
-        <!-- EDIT: location + availability (or delete this line) -->
-        <p class="meta">Salt Lake City, UT &nbsp;·&nbsp; <span>open to roles</span></p>
-      </div>
+          <h1>Brian Keller</h1>
 
-      <!-- Signature: a least-squares fit converging on load (the page's one flourish) -->
-      <div class="plot">
-        <canvas id="fit" width="440" height="300" aria-hidden="true"></canvas>
-        <div class="cap"><span>least&#8209;squares fit</span><b id="status">converging…</b></div>
+          <p class="tagline">I build data-driven systems for real-world physical problems: from human movement labs to tools in the field.</p>
+
+          <p class="meta">Salt Lake City, UT &nbsp;&middot;&nbsp; <span>open to roles</span></p>
+        </div>
+
+        <!-- Signature: a least-squares fit converging on load (the page's one flourish) -->
+        <div class="plot">
+          <canvas id="fit" width="440" height="300" aria-hidden="true"></canvas>
+          <div class="cap"><span>least&#8209;squares fit</span><b id="status">converging&hellip;</b></div>
+        </div>
       </div>
     </div>
   </header>
@@ -235,21 +261,22 @@
     <div class="wrap about-grid">
       <div class="section-label">About</div>
       <div class="lede">
-        <!-- EDIT: 2 short paragraphs — background + what you're after -->
-        <p>I'm a data and machine learning practitioner focused on taking models from notebook to production — feature pipelines, training, evaluation, and the unglamorous plumbing that makes them reliable.</p>
-        <p>My background spans [your background here]. I care about clean data, honest metrics, and shipping things people actually use.</p>
-
-        <!-- EDIT: your skills/tools -->
+        <!-- Background + Goals -->
+        <p>I'm a biomedical engineering BS/MS student at the University of Utah, building machine learning and computer vision systems for physical, real-world problems.
+          My work spans human biomechanics research, data science in numerous modalities, and hands-on problem solving.</p>
+        <p>Whether the input is motion-capture data, a camera feed, or a clinical signal, I focus on the same things: clean data, thoughtful evaluation, and systems that hold up outside the lab. See what I've built on the <a href="projects.html" style="color:var(--accent)">projects</a> page.</p>
+        <!-- skills/tools -->
         <div class="skills">
           <span>Python</span>
           <span>PyTorch</span>
           <span>scikit-learn</span>
+          <span>NumPy / Pandas</span>
+          <span>MATLAB</span>
+          <span>OpenSim</span>
+          <span>Vicon Mocap</span>
+          <span>Deep Learning</span>
+          <span>Fusion 360</span>
           <span>SQL</span>
-          <span>Pandas</span>
-          <span>Spark</span>
-          <span>AWS</span>
-          <span>Docker</span>
-          <span>MLflow</span>
         </div>
       </div>
     </div>
@@ -260,10 +287,9 @@
     <div class="wrap">
       <p class="eyebrow" style="color:var(--muted)">Elsewhere</p>
       <nav class="links">
-        <!-- EDIT every href + value below -->
-        <a href="mailto:you@example.com">
+        <a href="mailto:bakeller2002@gmail.com">
           <span class="k">email</span>
-          <span class="v">you@example.com</span>
+          <span class="v">bakeller2002@gmail.com</span>
           <span class="arrow">&rarr;</span>
         </a>
         <a href="https://github.com/bakeller2002" target="_blank" rel="noopener">
@@ -271,15 +297,15 @@
           <span class="v">github.com/bakeller2002</span>
           <span class="arrow">&#8599;</span>
         </a>
-        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener">
+        <a href="https://www.linkedin.com/in/briankeller37" target="_blank" rel="noopener">
           <span class="k">linkedin</span>
-          <span class="v">linkedin.com/in/yourusername</span>
+          <span class="v">linkedin.com/in/briankeller37</span>
           <span class="arrow">&#8599;</span>
         </a>
-        <!-- CV: point this at a hosted resume PDF (e.g. resume.pdf in this folder) -->
-        <a href="resume.pdf" target="_blank" rel="noopener">
+        <!-- CV: file must be named exactly BK_Resume.pdf at the repo root (case-sensitive on GitHub Pages) -->
+        <a href="BK_Resume.pdf" target="_blank" rel="noopener">
           <span class="k">cv</span>
-          <span class="v">Download résumé</span>
+          <span class="v">Download r&eacute;sum&eacute;</span>
           <span class="arrow">&darr;</span>
         </a>
       </nav>
@@ -289,8 +315,7 @@
   <!-- ===================== FOOTER ===================== -->
   <footer>
     <div class="wrap">
-      <!-- EDIT: name / year -->
-      © 2026 Your Name · built as a single file
+      &copy; 2026 Brian Keller
     </div>
   </footer>
 
@@ -301,7 +326,6 @@
   var ctx = canvas.getContext("2d");
   var status = document.getElementById("status");
 
-  // device-pixel-ratio crispness
   function setup(){
     var dpr = window.devicePixelRatio || 1;
     var rect = canvas.getBoundingClientRect();
@@ -313,7 +337,6 @@
 
   var dims = { w: 440, h: 300 };
 
-  // generate points with a real linear trend + noise
   var N = 38, pts = [];
   function gen(){
     pts = [];
@@ -326,7 +349,6 @@
       pts.push({x:x, y:y});
     }
   }
-  // least-squares fit -> target line in normalized space
   function fit(){
     var sx=0,sy=0,sxx=0,sxy=0;
     for(var i=0;i<N;i++){ sx+=pts[i].x; sy+=pts[i].y; sxx+=pts[i].x*pts[i].x; sxy+=pts[i].x*pts[i].y; }
@@ -345,7 +367,6 @@
   function draw(){
     ctx.clearRect(0,0,dims.w,dims.h);
 
-    // faint grid
     ctx.strokeStyle = "rgba(255,255,255,.06)";
     ctx.lineWidth = 1;
     for(var g=1; g<5; g++){
@@ -355,14 +376,12 @@
       ctx.beginPath(); ctx.moveTo(gx,20); ctx.lineTo(gx,dims.h-20); ctx.stroke();
     }
 
-    // points
     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--point").trim() || "rgba(147,180,214,.55)";
     for(var i=0;i<N;i++){
       var q = toPx(pts[i]);
       ctx.beginPath(); ctx.arc(q.x,q.y,3,0,Math.PI*2); ctx.fill();
     }
 
-    // current fit line
     var a = toPx({x:0, y: cur.m*0 + cur.b});
     var c = toPx({x:1, y: cur.m*1 + cur.b});
     ctx.strokeStyle = "#E9A23B";
@@ -375,14 +394,12 @@
     dims = setup();
     gen();
     target = fit();
-    // begin from a deliberately-bad guess so the convergence reads
     cur = reduced ? {m:target.m,b:target.b} : {m: -0.2 + Math.random()*0.2, b: 0.7};
     if(reduced){ draw(); status.textContent = "converged"; return; }
 
     var t = 0;
     function step(){
       t += 0.025;
-      var e = t>=1 ? 1 : 1-Math.pow(1-t,3); // ease-out cubic
       cur.m = cur.m + (target.m - cur.m)*0.12;
       cur.b = cur.b + (target.b - cur.b)*0.12;
       draw();
