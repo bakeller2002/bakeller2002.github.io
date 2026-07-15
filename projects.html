@@ -130,6 +130,54 @@
     color:#1a1205; background:var(--accent);
     border-radius:5px; padding:2px 7px;
   }
+
+  /* --- whimsical poster preview inside the tile figure --- */
+  .thumb--poster{ isolation:isolate; }
+  /* the rendered first page, cropped to a "peek" of the top of the poster */
+  .poster-preview{
+    position:absolute; top:0; left:0; width:100%; height:auto; display:block;
+    transform:scale(1.02); transform-origin:top center;
+    transition:transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .thumb--poster:hover .poster-preview,
+  .thumb--poster:focus-visible .poster-preview{ transform:scale(1.09); }
+  /* soft fade at the bottom so the zoom chip stays legible over any artwork */
+  .poster-scrim{
+    position:absolute; inset:0; pointer-events:none; opacity:0;
+    background:linear-gradient(to top, rgba(15,26,43,.6), rgba(15,26,43,0) 46%);
+    transition:opacity .3s ease;
+  }
+  .thumb--poster.has-preview .poster-scrim{ opacity:1; }
+  /* little tilted "poster" tag, only once a preview is showing */
+  .poster-tag{
+    position:absolute; top:12px; left:12px; z-index:2; display:none;
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:#1a1205; background:var(--accent);
+    padding:3px 11px; border-radius:4px; transform:rotate(-2.5deg);
+    box-shadow:0 3px 10px -4px rgba(0,0,0,.55);
+  }
+  .thumb--poster.has-preview .poster-tag{ display:block; }
+  /* magnifier chip that gently bobs to invite a click */
+  .zoom-hint{
+    position:absolute; right:12px; bottom:12px; z-index:2; display:none;
+    align-items:center; gap:6px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.06em;
+    color:var(--on-navy); background:rgba(15,26,43,.55);
+    border:1px solid var(--hairline-dark); border-radius:999px; padding:5px 11px;
+    backdrop-filter:blur(3px);
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .thumb--poster.has-preview .zoom-hint{ display:inline-flex; }
+  .thumb--poster:hover .zoom-hint,
+  .thumb--poster:focus-visible .zoom-hint{ color:var(--accent); border-color:var(--accent); }
+  /* fallback (no preview rendered yet, e.g. PDF not added or opened locally) */
+  .thumb--poster .ph--fallback{ display:inline-flex; align-items:center; gap:8px; z-index:1; }
+  .thumb--poster.has-preview .ph--fallback{ display:none; }
+
+  @media (prefers-reduced-motion:no-preference){
+    .thumb--poster.has-preview .zoom-hint{ animation:poster-bob 2.6s ease-in-out infinite; }
+    @keyframes poster-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+  }
   
 
   /* body */
@@ -265,16 +313,26 @@
                leave the <span class="none">…</span> line instead.
              =========================================================== -->
         <article class="tile">
-          <button class="thumb thumb--btn" type="button"
+          <button class="thumb thumb--btn thumb--poster" type="button"
                   data-poster="figs/Keller_WCB_Poster.pdf"
                   data-poster-title="OpenSim Deep Learning Pipeline — Poster"
                   data-poster-venue="Presented at World Congress of Biomechanics 2026"
+                  data-poster-preview="figs/muscle_poster.pdf"
                   aria-label="View project poster (opens a zoomable viewer)">
-            <span class="thumb__badge">PDF</span>
-            <span class="ph">view poster &#8599;</span>
+            <canvas class="poster-preview" aria-hidden="true"></canvas>
+            <span class="poster-scrim" aria-hidden="true"></span>
+            <span class="poster-tag">poster</span>
+            <span class="ph ph--fallback">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              view poster
+            </span>
+            <span class="zoom-hint">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M11 8.5v5M8.5 11h5"/></svg>
+              zoom
+            </span>
           </button>
           <div class="tile-body">
-            <span class="tag">Biomechanics · Deep Learning</span>
+
             <h2>OpenSim Deep Learning Pipeline</h2>
             <p class="meta">FAMM Lab · <b>Jun 2025 - Present</b></p>
             <p class="abstract">
@@ -297,7 +355,7 @@
             <span class="ph">figure</span>
           </div>
           <div class="tile-body">
-            <span class="tag">Computer Vision</span>
+
             <h2>Automated Nursery Viability System</h2>
             <p class="meta">Deep Learning Certificate Capstone · <b>Jan 2026 - Present</b></p>
             <p class="abstract">
@@ -316,7 +374,7 @@
              <img src="figs/biodesign_prototype.png" alt="Esophageal SpO2 monitor prototype" class="fit-contain">
           </div>
           <div class="tile-body">
-            <span class="tag">Medical Hardware</span>
+
             <h2>Esophageal SpO&#8322; Monitor</h2>
             <p class="meta"> BME Senior Capstone  ·  <b>Jan - Nov 2024</b></p>
             <p class="abstract">
@@ -411,6 +469,34 @@
 
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && modal.classList.contains('is-open')) closePoster();
+      });
+    })();
+  </script>
+
+  <!-- Auto-render the first PDF page as a tile preview (no separate image needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    (function () {
+      if (!window.pdfjsLib) return;
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      document.querySelectorAll('[data-poster-preview]').forEach(function (el) {
+        var url    = el.getAttribute('data-poster-preview');
+        var canvas = el.querySelector('.poster-preview');
+        if (!url || !canvas) return;
+
+        pdfjsLib.getDocument(url).promise
+          .then(function (pdf) { return pdf.getPage(1); })
+          .then(function (page) {
+            var base  = page.getViewport({ scale: 1 });
+            var vp    = page.getViewport({ scale: 900 / base.width }); // crisp ~900px bitmap
+            canvas.width  = vp.width;
+            canvas.height = vp.height;
+            return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+          })
+          .then(function () { el.classList.add('has-preview'); })
+          .catch(function () { /* PDF missing or blocked — keep the fallback look */ });
       });
     })();
   </script>
