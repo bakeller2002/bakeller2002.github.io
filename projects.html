@@ -115,6 +115,21 @@
     font-family:var(--mono); font-size:12px; letter-spacing:.14em;
     text-transform:uppercase; color:var(--on-navy-muted);
   }
+
+  /* clickable figure that opens the poster viewer */
+  .thumb--btn{
+    appearance:none; border:0; padding:0; margin:0; width:100%;
+    font:inherit; color:inherit; cursor:pointer;
+  }
+  .thumb--btn .ph{ transition:color .15s ease; }
+  .thumb--btn:hover .ph, .thumb--btn:focus-visible .ph{ color:var(--accent); }
+  .thumb--btn:focus-visible{ outline:2px solid var(--accent); outline-offset:-2px; }
+  .thumb__badge{
+    position:absolute; top:10px; left:10px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; font-weight:600;
+    color:#1a1205; background:var(--accent);
+    border-radius:5px; padding:2px 7px;
+  }
   
 
   /* body */
@@ -158,6 +173,51 @@
     border-top:1px solid var(--hairline);
     padding:32px 0 56px;
     font-family:var(--mono); font-size:12.5px; color:var(--muted); letter-spacing:.03em;
+  }
+
+  /* ---------- POSTER MODAL ---------- */
+  .poster-modal{ position:fixed; inset:0; z-index:100; display:none; }
+  .poster-modal.is-open{ display:block; }
+  .poster-modal__overlay{
+    position:absolute; inset:0;
+    background:rgba(10,16,28,.74); backdrop-filter:blur(2px);
+  }
+  .poster-modal__panel{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:min(94vw, 1100px); height:92vh;
+    display:flex; flex-direction:column;
+    background:var(--navy); color:var(--on-navy);
+    border:1px solid var(--hairline-dark); border-radius:14px; overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
+  }
+  .poster-modal__bar{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:12px 14px 12px 18px; border-bottom:1px solid var(--hairline-dark);
+  }
+  .poster-modal__titlewrap{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .poster-modal__title{
+    font-family:var(--mono); font-size:13px; letter-spacing:.03em; color:var(--on-navy);
+  }
+  .poster-modal__venue{
+    font-family:var(--mono); font-size:11px; letter-spacing:.03em; color:var(--accent);
+  }
+  .poster-modal__actions{ display:flex; gap:8px; align-items:center; }
+  .poster-modal__btn{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.03em;
+    text-decoration:none; color:var(--on-navy-muted);
+    border:1px solid var(--hairline-dark); border-radius:8px; padding:6px 10px;
+    background:transparent; cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .poster-modal__btn:hover, .poster-modal__btn:focus-visible{
+    color:var(--accent); border-color:var(--accent); outline:none;
+  }
+  .poster-modal__stage{ flex:1; min-height:0; background:var(--paper-2); }
+  .poster-modal__frame{ width:100%; height:100%; border:0; display:block; background:var(--paper-2); }
+  .poster-modal__hint{
+    margin:0; padding:9px 16px; text-align:center;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.03em; color:var(--on-navy-muted);
+    border-top:1px solid var(--hairline-dark);
   }
 
   /* ---------- RESPONSIVE ---------- */
@@ -205,11 +265,14 @@
                leave the <span class="none">…</span> line instead.
              =========================================================== -->
         <article class="tile">
-          <div class="thumb">
-            <!-- TO DO-->
-            <!-- ADD IMAGE: <img src="figs/opensim.jpg" alt="Predicted vs. measured joint forces"> -->
-            <span class="ph">figure</span>
-          </div>
+          <button class="thumb thumb--btn" type="button"
+                  data-poster="figs/Keller_WCB_Poster.pdf"
+                  data-poster-title="OpenSim Deep Learning Pipeline — Poster"
+                  data-poster-venue="Presented at World Congress of Biomechanics 2026"
+                  aria-label="View project poster (opens a zoomable viewer)">
+            <span class="thumb__badge">PDF</span>
+            <span class="ph">view poster &#8599;</span>
+          </button>
           <div class="tile-body">
             <span class="tag">Biomechanics · Deep Learning</span>
             <h2>OpenSim Deep Learning Pipeline</h2>
@@ -221,6 +284,7 @@
           </div>
           <div class="tile-links">
             <a href="https://github.com/Lenz-Lab/GRFMusclePrediction" target="_blank" rel="noopener">code &#8599;</a>
+            <a href="figs/muscle_poster.pdf" data-poster="figs/muscle_poster.pdf" data-poster-title="OpenSim Deep Learning Pipeline — Poster" data-poster-venue="Presented at World Congress of Biomechanics 2026">poster &#8599;</a>
             <span class="none">paper — in progress</span>
           </div>
         </article>
@@ -275,6 +339,81 @@
   <footer>
     <div class="wrap">© 2026 Brian Keller</div>
   </footer>
+
+  <!-- ===================== POSTER VIEWER (reusable) =====================
+       Any element with data-poster="path/to.pdf" opens this viewer.
+       Add data-poster-title="…" for the label shown in the top bar. -->
+  <div class="poster-modal" id="posterModal" role="dialog" aria-modal="true"
+       aria-label="Poster viewer" aria-hidden="true">
+    <div class="poster-modal__overlay" data-poster-close></div>
+    <div class="poster-modal__panel">
+      <div class="poster-modal__bar">
+        <span class="poster-modal__titlewrap">
+          <span class="poster-modal__title" id="posterTitle">Poster</span>
+          <span class="poster-modal__venue" id="posterVenue" hidden></span>
+        </span>
+        <div class="poster-modal__actions">
+          <a class="poster-modal__btn" id="posterOpen" href="#" target="_blank" rel="noopener">open in new tab &#8599;</a>
+          <a class="poster-modal__btn" id="posterDownload" href="#" download>download</a>
+          <button class="poster-modal__btn" type="button" data-poster-close aria-label="Close viewer">close &#215;</button>
+        </div>
+      </div>
+      <div class="poster-modal__stage">
+        <iframe class="poster-modal__frame" id="posterFrame" title="Poster PDF" src="about:blank"></iframe>
+      </div>
+      <p class="poster-modal__hint">Use the viewer's &#43;&#8202;/&#8202;&#8722; controls to zoom, then scroll or drag to pan.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var modal    = document.getElementById('posterModal');
+      var frame    = document.getElementById('posterFrame');
+      var openLink = document.getElementById('posterOpen');
+      var dlLink   = document.getElementById('posterDownload');
+      var titleEl  = document.getElementById('posterTitle');
+      var venueEl  = document.getElementById('posterVenue');
+      var lastFocus = null;
+
+      function openPoster(src, title, venue) {
+        lastFocus = document.activeElement;
+        titleEl.textContent = title || 'Poster';
+        if (venue) { venueEl.textContent = venue; venueEl.hidden = false; }
+        else { venueEl.textContent = ''; venueEl.hidden = true; }
+        // #view=Fit tells the browser's built-in PDF viewer to fit the page to start.
+        frame.src   = src + '#view=Fit';
+        openLink.href = src;
+        dlLink.href   = src;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closePoster() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        frame.src = 'about:blank';              // stop rendering / free memory
+        document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      document.addEventListener('click', function (e) {
+        var trigger = e.target.closest('[data-poster]');
+        if (trigger) {
+          e.preventDefault();
+          openPoster(trigger.getAttribute('data-poster'),
+                     trigger.getAttribute('data-poster-title'),
+                     trigger.getAttribute('data-poster-venue'));
+          return;
+        }
+        if (e.target.closest('[data-poster-close]')) closePoster();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closePoster();
+      });
+    })();
+  </script>
 
 </body>
 </html>
