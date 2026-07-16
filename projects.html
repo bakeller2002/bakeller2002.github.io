@@ -179,6 +179,25 @@
     @keyframes poster-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
   }
   
+  /* click-to-zoom for plain image figures */
+  .thumb img[data-zoom]{ cursor:zoom-in; }
+
+  .img-modal{ position:fixed; inset:0; z-index:100; display:none; }
+  .img-modal.is-open{ display:block; }
+  .img-modal__overlay{ position:absolute; inset:0;
+    background:rgba(10,16,28,.82); backdrop-filter:blur(2px); }
+  .img-modal__img{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    max-width:94vw; max-height:92vh; object-fit:contain;
+    border-radius:10px; box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
+  }
+  .img-modal__close{
+    position:absolute; top:16px; right:18px;
+    font-family:var(--mono); font-size:13px; letter-spacing:.03em; color:var(--on-navy);
+    background:rgba(15,26,43,.6); border:1px solid var(--hairline-dark);
+    border-radius:8px; padding:6px 12px; cursor:pointer;
+  }
+  .img-modal__close:hover{ color:var(--accent); border-color:var(--accent); }
 
   /* body */
   .tile-body{ padding:22px 22px 0; display:flex; flex-direction:column; flex:1; }
@@ -342,7 +361,7 @@
           </div>
           <div class="tile-links">
             <a href="https://github.com/Lenz-Lab/GRFMusclePrediction" target="_blank" rel="noopener">code &#8599;</a>
-            <a href="figs/Keller_WCB_Poster.pdf" data-poster="figs/Keller_WCB_Poster" data-poster-title="OpenSim Deep Learning Pipeline — Poster" data-poster-venue="Presented at World Congress of Biomechanics 2026">poster &#8599;</a>
+            <a href="figs/Keller_WCB_Poster.pdf" data-poster="figs/Keller_WCB_Poster.pdf" data-poster-title="OpenSim Deep Learning Pipeline — Poster" data-poster-venue="Presented at World Congress of Biomechanics 2026">poster &#8599;</a>
             <span class="none">paper — in progress</span>
           </div>
         </article>
@@ -350,8 +369,7 @@
         <!-- PROJECT TILE -->
         <article class="tile">
           <div class="thumb">
-            <img src="figs/plant_fig.png" alt="Computer vision plant viability grading">
-          </div>
+            <img src="figs/plant_fig.png" alt="Computer vision plant viability grading" data-zoom>
             <span class="ph">figure</span>
           </div>
           <div class="tile-body">
@@ -371,7 +389,7 @@
         <!-- PROJECT TILE -->
         <article class="tile">
           <div class="thumb">
-             <img src="figs/biodesign_prototype.png" alt="Esophageal SpO2 monitor prototype" class="fit-contain">
+             <img src="figs/biodesign_prototype.png" alt="Esophageal SpO2 monitor prototype" data-zoom class="fit-contain">
           </div>
           <div class="tile-body">
 
@@ -497,6 +515,43 @@
           })
           .then(function () { el.classList.add('has-preview'); })
           .catch(function () { /* PDF missing or blocked — keep the fallback look */ });
+      });
+    })();
+  </script>
+  <!--Figure Zoomin-->
+  <div class="img-modal" id="imgModal" role="dialog" aria-modal="true"
+     aria-label="Image viewer" aria-hidden="true">
+  <div class="img-modal__overlay" data-img-close></div>
+  <img class="img-modal__img" id="imgModalImg" alt="">
+  <button class="img-modal__close" type="button" data-img-close aria-label="Close viewer">close &#215;</button>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('imgModal');
+      var big   = document.getElementById('imgModalImg');
+      var last;
+      function open(src, alt) {
+        last = document.activeElement;
+        big.src = src; big.alt = alt || '';
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        big.src = '';
+        document.body.style.overflow = '';
+        if (last && last.focus) last.focus();
+      }
+      document.addEventListener('click', function (e) {
+        var img = e.target.closest('img[data-zoom]');
+        if (img) { open(img.currentSrc || img.src, img.alt); return; }
+        if (e.target.closest('[data-img-close]')) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
       });
     })();
   </script>
