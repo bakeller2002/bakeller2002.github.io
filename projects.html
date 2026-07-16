@@ -181,7 +181,10 @@
   
   /* click-to-zoom for plain image figures */
   .thumb img[data-zoom]{ cursor:zoom-in; }
-
+  /* zoom chip for plain image figures — matches the poster tile's chip */
+  .thumb:has(img[data-zoom]) .zoom-hint{ display:inline-flex; }
+  .thumb:has(img[data-zoom]):hover .zoom-hint,
+  .thumb:has(img[data-zoom]):focus-within .zoom-hint{ color:var(--accent); border-color:var(--accent); }
   .img-modal{ position:fixed; inset:0; z-index:100; display:none; }
   .img-modal.is-open{ display:block; }
   .img-modal__overlay{ position:absolute; inset:0;
@@ -340,7 +343,6 @@
                   aria-label="View project poster (opens a zoomable viewer)">
             <canvas class="poster-preview" aria-hidden="true"></canvas>
             <span class="poster-scrim" aria-hidden="true"></span>
-            <span class="poster-tag">poster</span>
             <span class="ph ph--fallback">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
               view poster
@@ -370,15 +372,18 @@
         <article class="tile">
           <div class="thumb">
             <img src="figs/plant_fig.png" alt="Computer vision plant viability grading" data-zoom>
-            <span class="ph">figure</span>
+            <span class="zoom-hint">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M11 8.5v5M8.5 11h5"/></svg>
+              zoom
+            </span>
           </div>
           <div class="tile-body">
-
             <h2>Automated Nursery Viability System</h2>
             <p class="meta">Deep Learning Certificate Capstone · <b>Jan 2026 - Present</b></p>
             <p class="abstract">
-              Built a computer vision framework that automates plant viability grading at commercial nurseries, replacing subjective manual assessment with objective, scalable forecasting across large product volumes. 
-              Interviewed nursery staff on-site to translate their qualitative grading criteria into precise technical specifications the system could meet in a real production environment.            </p>
+              Built a computer vision framework that automates plant viability grading at commercial nurseries, replacing subjective manual assessment with objective, scalable forecasting across large product volumes.
+              Interviewed nursery staff on-site to translate their qualitative grading criteria into precise technical specifications the system could meet in a real production environment.
+            </p>
           </div>
           <div class="tile-links">
             <a href="mailto:bakeller2002@gmail.com?subject=Nursery%20viability%20demo">request a demo &#8599;</a>
@@ -389,14 +394,17 @@
         <!-- PROJECT TILE -->
         <article class="tile">
           <div class="thumb">
-             <img src="figs/biodesign_prototype.png" alt="Esophageal SpO2 monitor prototype" data-zoom class="fit-contain">
+            <img src="figs/biodesign_prototype.png" alt="Esophageal SpO2 monitor prototype" data-zoom class="fit-contain">
+            <span class="zoom-hint">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M11 8.5v5M8.5 11h5"/></svg>
+              zoom
+            </span>
           </div>
           <div class="tile-body">
-
             <h2>Esophageal SpO&#8322; Monitor</h2>
             <p class="meta"> BME Senior Capstone  ·  <b>Jan - Nov 2024</b></p>
             <p class="abstract">
-              Led software development for a multidisciplinary team building a novel esophageal SpO₂ monitor - developing embedded firmware in CircuitPython and a user-facing UI for the device. 
+              Led software development for a multidisciplinary team building a novel esophageal SpO₂ monitor - developing embedded firmware in CircuitPython and a user-facing UI for the device.
               Supported component selection and sensor integration, and contributed to the design documentation and verification/validation protocols required to meet FDA and ISO 13485 standards.
             </p>
           </div>
